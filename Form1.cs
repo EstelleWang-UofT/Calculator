@@ -88,7 +88,7 @@ namespace Calculator
         {
             result = Convert.ToString(calculate());
             textBox.Text = result;
-            prevIn = valIn;
+            if (valIn != "") { prevIn = valIn; }
             valIn = "";
         }
 
