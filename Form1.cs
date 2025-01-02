@@ -8,25 +8,37 @@ namespace Calculator
             InitializeComponent();
         }
 
-        public string valIn = "";
-        public string tempOp = "";
-        public string result = "";
-        public string prevIn = "";
+        private string valIn = "";
+        private string tempOp = "";
+        private string result = "";
+        private string prevIn = "";
+        private bool prevEquals = false;
+        private bool haveInput = false;
 
         private void numButtonClick(object sender, EventArgs e)
         {
             valIn = valIn + ((Button)(sender)).Text;
+            haveInput = true;
             textBox.Text = valIn;
             // textBox.show()
         }
 
         private void opButtonClick(object sender, EventArgs e)
         {
-            if (result == "") { result = valIn; }
-            else { result = calculate().ToString(); }
+            if (result == "")
+            {
+                result = valIn;
+
+            }
+            else if (!prevEquals && haveInput)
+            {
+                result = calculate().ToString();
+            }
             textBox.Text = result;
             valIn = "";
             tempOp = ((Button)(sender)).Text;
+            prevEquals = false;
+            haveInput = false;
         }
 
         private void buttonNum0_Click(object sender, EventArgs e)
@@ -90,6 +102,7 @@ namespace Calculator
             textBox.Text = result;
             if (valIn != "") { prevIn = valIn; }
             valIn = "";
+            prevEquals = true;
         }
 
         private Single calculate()
@@ -109,7 +122,8 @@ namespace Calculator
             }
 
             Single res = 0;
-            if (tempOp == "+") { res = num1 + num2; }
+            if (tempOp == "") { res = num2; }
+            else if (tempOp == "+") { res = num1 + num2; }
             else if (tempOp == "-") { res = num1 - num2; }
             else if (tempOp == "*") { res = num1 * num2; }
             else { res = num1 / num2; }
